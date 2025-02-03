@@ -11,15 +11,15 @@
 #define IS_RGBW false
 #define NUM_PIXELS 25
 #define WS2812_PIN 7
-#define tempo 200
+#define tempo 100
 #define  button_A 5
 #define  button_B 6
 
 const uint led_pin_red = 13;
-
+const uint32_t BRIGHTNESS = 0xCC; // Ajusta o brilho aqui (0x00 para apagado, 0xFF para brilho máximo)
 
 // Variáveis globais
-static volatile uint a = 5;
+static volatile uint a = 0;
 static volatile uint32_t last_time = 0; // Armazena o tempo do último evento (em microssegundos)
 
 // Prototipação da função de interrupção --Botao_A
@@ -29,7 +29,7 @@ static void gpio_irq_button(uint gpio, uint32_t events);
 // Acionamento da matriz de LEDs - ws2812b
 void desenhar_matriz(PIO pio, uint sm, const uint32_t *desenho) {
     for (int i = 0; i < NUM_PIXELS; i++) { // Aplica a cor ao padrão
-        pio_sm_put_blocking(pio, sm, desenho[24-i]);
+       pio_sm_put_blocking(pio, sm, (desenho[24-i]) * BRIGHTNESS); 
     }
 }
 
